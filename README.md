@@ -1,2 +1,3 @@
 # dazzling-dash
-terrible top-down racer
+Dazzling Dash!
+a terrible top-down racer inspired by Atari Games' Super Sprint.
