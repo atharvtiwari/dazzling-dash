@@ -1,7 +1,11 @@
 # Dazzling Dash!
 a terrible top-down racer inspired by Atari Games' Super Sprint.
 
-**To do:**
+**Requirements**
+- python 3.6+
+- the rest of the required packages can be installed by running ```pip install -r requirements.txt```
+
+**To do**
 - [x] get a track.
 - [x] get a car.
 - [x] get the car moving.
