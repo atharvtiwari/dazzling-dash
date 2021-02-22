@@ -60,8 +60,10 @@ while run:
         mask_red = pygame.mask.from_surface(redcar)
     
     if keys[pygame.K_DOWN]:
-        if redspeed > -3:
+        if redspeed > 0:
             redspeed -= 0.10
+        elif redspeed > -2:
+            redspeed -= 0.01
         vel_red = Vector2(redspeed, 0)
         vel_red.rotate_ip(-redangle)
         redcar = pygame.transform.rotate(REDCAR_ORIGINAL, redangle)
