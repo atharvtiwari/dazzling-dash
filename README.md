@@ -1,7 +1,7 @@
 # Dazzling Dash!
 a terrible top-down racer inspired by Atari Games' Super Sprint.
 
-**TODO**
+**To do:**
 - [x] get a track.
 - [x] get a car.
 - [x] get the car moving.
