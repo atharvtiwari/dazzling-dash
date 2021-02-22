@@ -3,7 +3,7 @@ a terrible top-down racer inspired by Atari Games' Super Sprint.
 
 **Requirements**
 - python 3.6+
-- the rest of the required packages can be installed by running ```pip install -r requirements.txt```
+- pygame (you can get this by running ```pip install -r requirements.txt``` or simply ```pip install pygame```)
 
 **To do**
 - [x] get a track.
