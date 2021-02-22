@@ -1,6 +1,4 @@
 import pygame
-from pygame.display import set_icon
-import pygame.freetype
 from pygame.math import Vector2
 from pygame.locals import *
 import os.path
@@ -27,7 +25,6 @@ redcar = REDCAR_ORIGINAL
 mask_red = pygame.mask.from_surface(redcar)
 off_mask = pygame.mask.from_surface(track_image)
 off_mask.invert()
-font = pygame.freetype.SysFont(None, 42, True, True)
 s = False
 run = True
 
