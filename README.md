@@ -7,9 +7,9 @@ a terrible top-down racer inspired by Atari Games' Super Sprint.
 - [x] get the car moving.
 - [x] slow down!
 - [x] turn left.
-- [x] my bad, it was turn right.
+- [x] my bad, it was a right turn.
 - [ ] reverse.
-- [x] oh no, you're off track. now you're slow :(
+- [x] oh no, you went off track. now you're slow :(
 - [x] huh, you went off the map. reset.
 - [x] get some greenery around the track.
 - [ ] alright, now where's the physics?
