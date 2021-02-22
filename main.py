@@ -40,6 +40,8 @@ while run:
 
     if redspeed >= 0.02:
         redspeed -= 0.02
+    elif redspeed < -0.01:
+        redspeed += 0.01
     vel_red = Vector2(redspeed, 0)
     vel_red.rotate_ip(-redangle)
     redcar = pygame.transform.rotate(REDCAR_ORIGINAL, redangle)
@@ -62,7 +64,7 @@ while run:
         if redspeed > 0:
             redspeed -= 0.10
         elif redspeed > -2:
-            redspeed -= 0.01
+            redspeed -= 0.025
         vel_red = Vector2(redspeed, 0)
         vel_red.rotate_ip(-redangle)
         redcar = pygame.transform.rotate(REDCAR_ORIGINAL, redangle)
@@ -98,7 +100,7 @@ while run:
 
     if offtrack:
         if vel_red.magnitude_squared() > 0.25:
-            if redspeed >= 0:
+            if redspeed > 0:
                 redspeed -= 0.25
             else:
                 redspeed += 0.25
