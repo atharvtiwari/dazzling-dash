@@ -5,6 +5,7 @@ from pygame.locals import *
 import os.path
 
 pygame.init()
+pygame.display.set_caption('Dazzling Dash')
 clock = pygame.time.Clock()
 
 WIDTH = 1152
