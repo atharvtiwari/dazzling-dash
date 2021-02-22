@@ -1,6 +1,7 @@
 import pygame
 import pygame.freetype
 from pygame.math import Vector2
+from pygame.locals import *
 import os.path
 
 pygame.init()
@@ -8,7 +9,8 @@ clock = pygame.time.Clock()
 
 WIDTH = 1152
 HEIGHT = 648
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((WIDTH, HEIGHT), HWSURFACE|DOUBLEBUF|RESIZABLE)
+fake_screen = screen.copy()
 screen_rect = pygame.Rect((0, 0),(WIDTH, HEIGHT))
 filepath = os.path.dirname(__file__)
 
@@ -34,6 +36,8 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        elif event.type == VIDEORESIZE:
+            screen = pygame.display.set_mode(event.size, HWSURFACE|DOUBLEBUF|RESIZABLE)
 
     if redspeed >= 0.02:
         redspeed -= 0.02
@@ -44,6 +48,9 @@ while run:
 
     keys = pygame.key.get_pressed()
 
+    if keys[pygame.K_ESCAPE]:
+        break
+
     if keys[pygame.K_UP]:
         if redspeed < 7:
             redspeed += 0.05
@@ -53,22 +60,24 @@ while run:
         mask_red = pygame.mask.from_surface(redcar)
     
     if keys[pygame.K_DOWN]:
-        if redspeed >= 0.10:
+        if redspeed > -3:
             redspeed -= 0.10
-            vel_red = Vector2(redspeed, 0)
+        vel_red = Vector2(redspeed, 0)
         vel_red.rotate_ip(-redangle)
         redcar = pygame.transform.rotate(REDCAR_ORIGINAL, redangle)
         mask_red = pygame.mask.from_surface(redcar)
 
-    elif keys[pygame.K_LEFT]:
-        redangle += 2.5
-        vel_red.rotate_ip(-2.5)
+    if keys[pygame.K_LEFT]:
+        if vel_red.magnitude_squared() > 0.004:
+            redangle += 2.5
+            vel_red.rotate_ip(-2.5)
         redcar = pygame.transform.rotate(REDCAR_ORIGINAL, redangle)
         mask_red = pygame.mask.from_surface(redcar)
 
-    elif keys[pygame.K_RIGHT]:
-        redangle -= 2.5
-        vel_red.rotate_ip(2.5)
+    if keys[pygame.K_RIGHT]:
+        if vel_red.magnitude_squared() > 0.004:
+            redangle -= 2.5
+            vel_red.rotate_ip(2.5)
         redcar = pygame.transform.rotate(REDCAR_ORIGINAL, redangle)
         mask_red = pygame.mask.from_surface(redcar)
 
@@ -83,17 +92,22 @@ while run:
 
     offtrack = off_mask.overlap(mask_red, redcar_pos)
 
-    screen.fill(pygame.Color('darkgreen'))
-    screen.blit(track_image, (0, 0))
+    fake_screen.fill(pygame.Color('darkgreen'))
+    fake_screen.blit(track_image, (0, 0))
 
     if offtrack:
-        redspeed = 0.5
+        if vel_red.magnitude_squared() > 0.25:
+            if redspeed >= 0:
+                redspeed -= 0.25
+            else:
+                redspeed += 0.25
         vel_red = Vector2(redspeed, 0)
         vel_red.rotate_ip(-redangle)
         redcar = pygame.transform.rotate(REDCAR_ORIGINAL, redangle)
         mask_red = pygame.mask.from_surface(redcar)
 
-    screen.blit(redcar, redcar_pos)
+    fake_screen.blit(redcar, redcar_pos)
+    screen.blit(pygame.transform.scale(fake_screen, screen.get_rect().size), (0, 0))
     pygame.display.flip()
     clock.tick(60)
 
