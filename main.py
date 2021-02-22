@@ -1,4 +1,5 @@
 import pygame
+from pygame.display import set_icon
 import pygame.freetype
 from pygame.math import Vector2
 from pygame.locals import *
@@ -12,27 +13,24 @@ WIDTH = 1152
 HEIGHT = 648
 screen = pygame.display.set_mode((WIDTH, HEIGHT), HWSURFACE|DOUBLEBUF|RESIZABLE)
 fake_screen = screen.copy()
-screen_rect = pygame.Rect((0, 0),(WIDTH, HEIGHT))
+
 filepath = os.path.dirname(__file__)
-
 track_image = pygame.image.load(os.path.join(filepath+"/images", "track.png")).convert_alpha()
-
-
 REDCAR_ORIGINAL = pygame.image.load(os.path.join(filepath+"/images", "car.png")).convert_alpha()
+
 redangle = 0
 redspeed = 0.0
 pos_red = Vector2(210, 41)
 vel_red = Vector2(redspeed, 0)
 
 redcar = REDCAR_ORIGINAL
-
 mask_red = pygame.mask.from_surface(redcar)
 off_mask = pygame.mask.from_surface(track_image)
 off_mask.invert()
-
 font = pygame.freetype.SysFont(None, 42, True, True)
-s=False
+s = False
 run = True
+
 while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
