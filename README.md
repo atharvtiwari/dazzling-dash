@@ -19,6 +19,8 @@ a terrible top-down racer inspired by Atari Games' Super Sprint.
 - [x] dynamic window resizing.
 - [ ] fullscreen.
 - [ ] alright, now where's the physics?
+- [ ] scorecard or laps count and time.
 - [ ] why are we alone? get some computer players atleast.
 - [ ] an options menu would be nice.
+- [ ] obstacles maybe?
 - [ ] ok that's all i have for now but i'm sure there's more.
