@@ -12,7 +12,7 @@ HEIGHT = 648
 screen = pygame.display.set_mode((WIDTH, HEIGHT), HWSURFACE|DOUBLEBUF|RESIZABLE)
 fake_screen = screen.copy()
 
-filepath = os.path.dirname(__file__)
+filepath = os.getcwd()
 track_image = pygame.image.load(os.path.join(filepath+"/images", "track.png")).convert_alpha()
 REDCAR_ORIGINAL = pygame.image.load(os.path.join(filepath+"/images", "car.png")).convert_alpha()
 
