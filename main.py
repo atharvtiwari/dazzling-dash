@@ -81,7 +81,7 @@ while run:
         redcar = pygame.transform.rotate(REDCAR_ORIGINAL, redangle)
         mask_red = pygame.mask.from_surface(redcar)
 
-    if (pos_red.x <= 0) or (pos_red.x >= WIDTH) or (pos_red.y <= 0) or (pos_red.y >= HEIGHT):
+    if (pos_red.x <= 0) or (pos_red.x >= WIDTH) or (pos_red.y <= 0) or (pos_red.y >= HEIGHT) or keys[pygame.K_e]:
         redangle = 0
         redspeed = 0.0
         pos_red = Vector2(277,87.5)
