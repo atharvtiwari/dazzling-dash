@@ -39,6 +39,8 @@ while run:
         redspeed -= 0.02
     elif redspeed < -0.01:
         redspeed += 0.01
+    elif redspeed < 0.02 or redspeed >=-0.01:
+        redspeed = 0
     vel_red = Vector2(redspeed, 0)
     vel_red.rotate_ip(-redangle)
     redcar = pygame.transform.rotate(REDCAR_ORIGINAL, redangle)
@@ -105,6 +107,8 @@ while run:
         vel_red.rotate_ip(-redangle)
         redcar = pygame.transform.rotate(REDCAR_ORIGINAL, redangle)
         mask_red = pygame.mask.from_surface(redcar)
+
+    print(pos_red, vel_red)
 
     fake_screen.blit(redcar, redcar_pos)
     screen.blit(pygame.transform.scale(fake_screen, screen.get_rect().size), (0, 0))
