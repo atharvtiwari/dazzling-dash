@@ -7,8 +7,8 @@ pygame.init()
 pygame.display.set_caption('Dazzling Dash')
 clock = pygame.time.Clock()
 
-WIDTH = 1152
-HEIGHT = 648
+WIDTH = 1280
+HEIGHT = 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT), HWSURFACE|DOUBLEBUF|RESIZABLE)
 fake_screen = screen.copy()
 
@@ -18,7 +18,7 @@ REDCAR_ORIGINAL = pygame.image.load(os.path.join(filepath+"/images", "car.png"))
 
 redangle = 0
 redspeed = 0.0
-pos_red = Vector2(210, 41)
+pos_red = Vector2(277,87.5)
 vel_red = Vector2(redspeed, 0)
 
 redcar = REDCAR_ORIGINAL
@@ -84,7 +84,7 @@ while run:
     if (pos_red.x <= 0) or (pos_red.x >= WIDTH) or (pos_red.y <= 0) or (pos_red.y >= HEIGHT):
         redangle = 0
         redspeed = 0.0
-        pos_red = Vector2(210, 41)
+        pos_red = Vector2(277,87.5)
         vel_red = Vector2(redspeed, 0)
     
     pos_red += vel_red
