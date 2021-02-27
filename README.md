@@ -16,11 +16,11 @@ a terrible top-down racer inspired by Atari Games' Super Sprint.
 - [x] oh no, you went off track. now you're slow :(
 - [x] huh, you went off the map. reset.
 - [x] get some greenery around the track.
-- [x] dynamic window resizing.
-- [ ] fullscreen.
-- [ ] alright, now where's the physics?
+- [x] alright, now where's the physics?
 - [ ] scorecard or laps count and time.
+- [ ] a menu would be nice.
 - [ ] why are we alone? get some computer players atleast.
-- [ ] an options menu would be nice.
+- [ ] dynamic window resizing.
+- [ ] fullscreen.
 - [ ] obstacles maybe?
 - [ ] ok that's all i have for now but i'm sure there's more.
