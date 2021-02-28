@@ -12,7 +12,7 @@ small_font = pygame.font.SysFont(None, 30)
 
 WIDTH = 1280
 HEIGHT = 720
-screen = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
+screen = pygame.display.set_mode((WIDTH, HEIGHT), HWSURFACE|DOUBLEBUF, 32)
 
 filepath = os.getcwd()
 track_image = pygame.image.load(os.path.join(filepath+"\images", "track.png")).convert_alpha()
@@ -48,18 +48,19 @@ def main_menu():
 
         screen.fill(pygame.Color('darkgreen'))
         screen.blit(track_image, (0, 0))
-        draw_text('Main Menu', font, pygame.Color('white'), screen, WIDTH/2 - 79, 95)
-        draw_text('Press ENTER to begin', small_font, pygame.Color('red'), screen, WIDTH/2 - 95, 165)
+
+        draw_text('Main Menu', font, pygame.Color('white'), screen, WIDTH/2 - 71, 95)
+        draw_text('Press ENTER to begin', small_font, pygame.Color('red'), screen, WIDTH/2 - 85, 165)
 
         button1 = pygame.Rect(WIDTH/2 - 140, 250, 300, 50)
         button2 = pygame.Rect(WIDTH/2 - 140, 350, 300, 50)
         button3 = pygame.Rect(WIDTH/2 - 140, 450, 300, 50)
         pygame.draw.rect(screen, pygame.Color('white'), button1)
-        draw_text('Start', small_font, pygame.Color('black'), screen, WIDTH/2 - 6, 265)
+        draw_text('Start', small_font, pygame.Color('black'), screen, WIDTH/2 - 9, 265)
         pygame.draw.rect(screen, pygame.Color('white'), button2)
-        draw_text('Controls', small_font, pygame.Color('black'), screen, WIDTH/2 - 26, 365)
+        draw_text('Controls', small_font, pygame.Color('black'), screen, WIDTH/2 - 30, 365)
         pygame.draw.rect(screen, pygame.Color('white'), button3)
-        draw_text('Exit', small_font, pygame.Color('black'), screen, WIDTH/2 - 6, 465)
+        draw_text('Exit', small_font, pygame.Color('black'), screen, WIDTH/2 - 7, 465)
         
         mx, my = pygame.mouse.get_pos()
 
@@ -94,8 +95,10 @@ def controls():
 
         screen.fill(pygame.Color('darkgreen'))
         screen.blit(track_image, (0, 0))
+
         back = pygame.Rect(WIDTH/2 - 140, 220, 300, 420)
         pygame.draw.rect(screen, pygame.Color('white'), back)
+
         draw_text('Controls', font, pygame.Color('white'), screen, WIDTH/2 - 60, 120)
         draw_text('W/UP - Accelerate', small_font, pygame.Color('black'), screen, WIDTH/2 - 120, 250)
         draw_text('S/DOWN - Brake & Reverse', small_font, pygame.Color('black'), screen, WIDTH/2 - 120, 300)
@@ -105,6 +108,54 @@ def controls():
         draw_text('E - Reset', small_font, pygame.Color('black'), screen, WIDTH/2 - 120, 500)
         draw_text('ESC - Main Menu', small_font, pygame.Color('black'), screen, WIDTH/2 - 120, 550)
         draw_text('Q - Quit', small_font, pygame.Color('black'), screen, WIDTH/2 - 120, 600)
+
+        pygame.display.flip()
+        clock.tick(60)
+
+def score(laps, time):
+    
+    score_run = True
+
+    while score_run:
+
+        click = False
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    score_run = False
+                    main_menu()
+
+        screen.fill(pygame.Color('darkgreen'))
+        screen.blit(track_image, (0, 0))
+
+        draw_text('Total laps: '+str(laps), small_font, pygame.Color('white'), screen, WIDTH/2 - 45, 95)
+        draw_text('Average lap time: '+str(round(time, 2))+'s', small_font, pygame.Color('white'), screen, WIDTH/2 - 100, 165)
+
+        button1 = pygame.Rect(WIDTH/2 - 140, 250, 300, 50)
+        button2 = pygame.Rect(WIDTH/2 - 140, 350, 300, 50)
+        pygame.draw.rect(screen, pygame.Color('white'), button1)
+        draw_text('Restart', small_font, pygame.Color('black'), screen, WIDTH/2 - 20, 265)
+        pygame.draw.rect(screen, pygame.Color('white'), button2)
+        draw_text('Exit', small_font, pygame.Color('black'), screen, WIDTH/2 - 6, 365)
+        
+        mx, my = pygame.mouse.get_pos()
+
+        if button1.collidepoint((mx, my)):
+            if click:
+                game()
+
+        if button2.collidepoint((mx, my)):
+            if click:
+                pygame.quit()
+                sys.exit()
+
         pygame.display.flip()
         clock.tick(60)
 
@@ -124,6 +175,8 @@ def game():
     lap = 0 
     start_time = pygame.time.get_ticks()
     lap_time = 0
+    total_time = 0
+    avg_time = 0
 
     game_run = True
 
@@ -135,9 +188,12 @@ def game():
             if event.type == KEYDOWN:
                 if event.key == K_q:
                     pygame.quit()
-                    sys.exit()
+                    sys.exit()                    
                 if event.key == K_ESCAPE:
-                    game_run = False
+                    if lap != 0:
+                        score(lap, avg_time)
+                    else:
+                        game_run = 0
         
         vel_red = Vector2(redspeed, 0)
         vel_red.rotate_ip(-redangle)
@@ -193,7 +249,9 @@ def game():
             if counter == 1:
                 lap += 1
                 if start_time:
-                    lap_time = round((pygame.time.get_ticks() - start_time)/1000, 2)
+                    lap_time = (pygame.time.get_ticks() - start_time)/1000
+                    total_time += lap_time
+                    avg_time = total_time / lap
                     start_time = pygame.time.get_ticks()
                 counter = 0
 
@@ -214,7 +272,7 @@ def game():
 
         screen.blit(redcar, redcar_pos)
         draw_text('laps: '+str(lap), small_font, pygame.Color('red'), screen, WIDTH - 140, 15)
-        draw_text('last lap time: '+str(lap_time)+'s', small_font, pygame.Color('red'), screen, WIDTH - 220, 40)
+        draw_text('last lap time: '+str(round(lap_time, 2))+'s', small_font, pygame.Color('red'), screen, WIDTH - 220, 40)
         pygame.display.flip()
         clock.tick(60)
 
