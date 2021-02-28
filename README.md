@@ -17,8 +17,8 @@ a terrible top-down racer inspired by Atari Games' Super Sprint.
 - [x] huh, you went off the map. reset.
 - [x] get some greenery around the track.
 - [x] alright, now where's the physics?
-- [ ] scorecard or laps count and time.
-- [ ] a menu would be nice.
+- [x] scorecard or laps count and time.
+- [x] a menu would be nice.
 - [ ] why are we alone? get some computer players atleast.
 - [ ] dynamic window resizing.
 - [ ] fullscreen.
