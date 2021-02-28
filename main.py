@@ -43,10 +43,13 @@ def main_menu():
                 if event.key == K_ESCAPE or event.key == K_q:
                     pygame.quit()
                     sys.exit()
+                if event.key == K_RETURN:
+                    game()
 
         screen.fill(pygame.Color('darkgreen'))
         screen.blit(track_image, (0, 0))
-        draw_text('Main Menu', font, pygame.Color('white'), screen, WIDTH/2 - 80, 120)
+        draw_text('Main Menu', font, pygame.Color('white'), screen, WIDTH/2 - 79, 95)
+        draw_text('Press ENTER to begin', small_font, pygame.Color('red'), screen, WIDTH/2 - 95, 165)
 
         button1 = pygame.Rect(WIDTH/2 - 140, 250, 300, 50)
         button2 = pygame.Rect(WIDTH/2 - 140, 350, 300, 50)
@@ -117,6 +120,11 @@ def game():
     pos_red = Vector2(277, 87.5)
     vel_red = Vector2(redspeed, 0)
 
+    counter = 0
+    lap = 0 
+    start_time = pygame.time.get_ticks()
+    lap_time = 0
+
     game_run = True
 
     while game_run:
@@ -172,9 +180,22 @@ def game():
             redangle = 0
             redspeed = 0
             pos_red = Vector2(277, 87.5)
+            counter = 0
+            start_time = pygame.time.get_ticks()
         
         pos_red += vel_red
         redcar_pos = list(int(v) for v in pos_red)
+
+        if redcar_pos[0] in range(650, 700) and redcar_pos[1] in range(290, 431):
+            counter = 1
+
+        if redcar_pos[0] in range(350,380) and redcar_pos[1] in range(70, 180):
+            if counter == 1:
+                lap += 1
+                if start_time:
+                    lap_time = round((pygame.time.get_ticks() - start_time)/1000, 2)
+                    start_time = pygame.time.get_ticks()
+                counter = 0
 
         offtrack = off_mask.overlap(mask_red, redcar_pos)
 
@@ -189,9 +210,11 @@ def game():
                     redspeed += 0.25
 
         if redspeed != 0:
-            print(pos_red, vel_red)
+            print(redcar_pos, vel_red)
 
         screen.blit(redcar, redcar_pos)
+        draw_text('laps: '+str(lap), small_font, pygame.Color('red'), screen, WIDTH - 140, 15)
+        draw_text('last lap time: '+str(lap_time)+'s', small_font, pygame.Color('red'), screen, WIDTH - 220, 40)
         pygame.display.flip()
         clock.tick(60)
 
