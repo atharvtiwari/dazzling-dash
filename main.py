@@ -15,8 +15,8 @@ HEIGHT = 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
 filepath = os.getcwd()
-track_image = pygame.image.load(os.path.join(filepath+"/images", "track.png")).convert_alpha()
-REDCAR_ORIGINAL = pygame.image.load(os.path.join(filepath+"/images", "car.png")).convert_alpha()
+track_image = pygame.image.load(os.path.join(filepath+"\images", "track.png")).convert_alpha()
+REDCAR_ORIGINAL = pygame.image.load(os.path.join(filepath+"\images", "car.png")).convert_alpha()
 
 click = False
 
