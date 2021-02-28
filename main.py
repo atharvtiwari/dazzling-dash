@@ -222,13 +222,13 @@ def game():
 
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             if vel_red.magnitude_squared() > 0.004:
-                redangle += 2.5
-                vel_red.rotate_ip(-2.5)
+                redangle += 3
+                vel_red.rotate_ip(-3)
 
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             if vel_red.magnitude_squared() > 0.004:
-                redangle -= 2.5
-                vel_red.rotate_ip(2.5)
+                redangle -= 3
+                vel_red.rotate_ip(3)
         
         if keys[pygame.K_SPACE]:
             redspeed = 0
