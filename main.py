@@ -86,22 +86,22 @@ def controls():
                 pygame.quit()
                 sys.exit()
             if event.type == KEYDOWN:
-                if event.key == K_q:
-                    pygame.quit()
-                    sys.exit()
                 if event.key == K_ESCAPE:
                     controls_run = False
 
         screen.fill(pygame.Color('darkgreen'))
-        draw_text('Controls', font, pygame.Color('white'), screen, WIDTH/2 - 80, 120)
+        screen.blit(track_image, (0, 0))
+        back = pygame.Rect(WIDTH/2 - 140, 220, 300, 420)
+        pygame.draw.rect(screen, pygame.Color('black'), back)
+        draw_text('Controls', font, pygame.Color('white'), screen, WIDTH/2 - 60, 120)
         draw_text('W/UP - Accelerate', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 250)
         draw_text('S/DOWN - Brake & Reverse', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 300)
         draw_text('A/LEFT - Turn Left', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 350)
         draw_text('D/RIGHT - Turn Right', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 400)
         draw_text('SPACE - Handbrake    ', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 450)
-        draw_text('E - Reset', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 350)
-        draw_text('ESC - Main Menu', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 500)
-        draw_text('Q - Quit', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 550)
+        draw_text('E - Reset', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 500)
+        draw_text('ESC - Main Menu', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 550)
+        draw_text('Q - Quit', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 600)
         pygame.display.flip()
         clock.tick(60)
 
