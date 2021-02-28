@@ -52,8 +52,8 @@ def main_menu():
         screen.fill(pygame.Color('darkgreen'))
         screen.blit(track_image, (0, 0))
 
-        draw_text('Main Menu', font, pygame.Color('white'), screen, WIDTH/2 - 70, 95)
-        draw_text('Press ENTER to begin', small_font, pygame.Color('red'), screen, WIDTH/2 - 87, 165)
+        draw_text('Main Menu', font, pygame.Color('white'), screen, WIDTH/2 - 73, 95)
+        draw_text('Press ENTER to begin', small_font, pygame.Color('red'), screen, WIDTH/2 - 90, 165)
 
         button1 = pygame.Rect(WIDTH/2 - 140, 250, 300, 50)
         button2 = pygame.Rect(WIDTH/2 - 140, 350, 300, 50)
@@ -137,8 +137,8 @@ def score(laps, time):
         screen.fill(pygame.Color('darkgreen'))
         screen.blit(track_image, (0, 0))
 
-        draw_text('Total laps: '+str(laps), small_font, pygame.Color('white'), screen, WIDTH/2 - 40, 95)
-        draw_text('Average lap time: '+str(round(time, 2))+'s', small_font, pygame.Color('white'), screen, WIDTH/2 - 100, 165)
+        draw_text('Total laps: '+str(laps), small_font, pygame.Color('white'), screen, WIDTH/2 - 45, 95)
+        draw_text('Average lap time: '+str(round(time, 2))+'s', small_font, pygame.Color('white'), screen, WIDTH/2 - 85, 165)
 
         button1 = pygame.Rect(WIDTH/2 - 140, 250, 300, 50)
         button2 = pygame.Rect(WIDTH/2 - 140, 350, 300, 50)
@@ -191,10 +191,7 @@ def game():
                     pygame.quit()
                     sys.exit()                    
                 if event.key == K_ESCAPE:
-                    if lap != 0:
-                        score(lap, avg_time)
-                    else:
-                        game_run = False
+                    score(lap, avg_time)
         
         vel_red = Vector2(redspeed, 0)
         vel_red.rotate_ip(-redangle)
