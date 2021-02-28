@@ -2,44 +2,106 @@ import pygame
 from pygame.math import Vector2
 from pygame.locals import *
 import os.path
+import sys
 
 pygame.init()
 pygame.display.set_caption('Dazzling Dash')
 clock = pygame.time.Clock()
-font = pygame.font.SysFont(None, 20)
+font = pygame.font.SysFont(None, 50)
+small_font = pygame.font.SysFont(None, 30)
 
 WIDTH = 1280
 HEIGHT = 720
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
 filepath = os.getcwd()
 track_image = pygame.image.load(os.path.join(filepath+"/images", "track.png")).convert_alpha()
 REDCAR_ORIGINAL = pygame.image.load(os.path.join(filepath+"/images", "car.png")).convert_alpha()
 
-def draw_text(text, font, color, size, surface, x, y):
-    text_obj = font.render(text, size, color)
+click = False
+
+def draw_text(text, font, color, surface, x, y):
+    text_obj = font.render(text, True, color)
     text_rect = text_obj.get_rect()
     text_rect.topleft = (x, y)
     surface.blit(text_obj, text_rect)
 
 def main_menu():
 
-    menu_run = True
-    while menu_run:
+    while True:
+
+        click = False
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                menu_run = False
-        
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_RETURN]:
-            game()
-
-        if keys[pygame.K_q]:
-            break
+                pygame.quit()
+                sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE or event.key == K_q:
+                    pygame.quit()
+                    sys.exit()
 
         screen.fill(pygame.Color('darkgreen'))
-        draw_text('Main Menu', font, pygame.Color('white'), 2, screen, WIDTH/2, 50)
+        screen.blit(track_image, (0, 0))
+        draw_text('Main Menu', font, pygame.Color('white'), screen, WIDTH/2 - 80, 120)
+
+        button1 = pygame.Rect(WIDTH/2 - 140, 250, 300, 50)
+        button2 = pygame.Rect(WIDTH/2 - 140, 350, 300, 50)
+        button3 = pygame.Rect(WIDTH/2 - 140, 450, 300, 50)
+        pygame.draw.rect(screen, pygame.Color('white'), button1)
+        draw_text('Start', small_font, pygame.Color('black'), screen, WIDTH/2 - 6, 265)
+        pygame.draw.rect(screen, pygame.Color('white'), button2)
+        draw_text('Controls', small_font, pygame.Color('black'), screen, WIDTH/2 - 26, 365)
+        pygame.draw.rect(screen, pygame.Color('white'), button3)
+        draw_text('Exit', small_font, pygame.Color('black'), screen, WIDTH/2 - 6, 465)
+        
+        mx, my = pygame.mouse.get_pos()
+
+        if button1.collidepoint((mx, my)):
+            if click:
+                game()
+
+        if button2.collidepoint((mx, my)):
+            if click:
+                controls()
+
+        if button3.collidepoint((mx, my)):
+            if click:
+                pygame.quit()
+                sys.exit()
+
+        pygame.display.flip()
+        clock.tick(60)
+
+def controls():
+
+    controls_run = True
+
+    while controls_run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_q:
+                    pygame.quit()
+                    sys.exit()
+                if event.key == K_ESCAPE:
+                    controls_run = False
+
+        screen.fill(pygame.Color('darkgreen'))
+        draw_text('Controls', font, pygame.Color('white'), screen, WIDTH/2 - 80, 120)
+        draw_text('W/UP - Accelerate', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 250)
+        draw_text('S/DOWN - Brake & Reverse', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 300)
+        draw_text('A/LEFT - Turn Left', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 350)
+        draw_text('D/RIGHT - Turn Right', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 400)
+        draw_text('SPACE - Handbrake    ', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 450)
+        draw_text('E - Reset', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 350)
+        draw_text('ESC - Main Menu', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 500)
+        draw_text('Q - Quit', small_font, pygame.Color('white'), screen, WIDTH/2 - 120, 550)
         pygame.display.flip()
         clock.tick(60)
 
@@ -56,10 +118,18 @@ def game():
     vel_red = Vector2(redspeed, 0)
 
     game_run = True
+
     while game_run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                game_run = False
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_q:
+                    pygame.quit()
+                    sys.exit()
+                if event.key == K_ESCAPE:
+                    game_run = False
         
         vel_red = Vector2(redspeed, 0)
         vel_red.rotate_ip(-redangle)
@@ -74,9 +144,6 @@ def game():
             redspeed = 0
 
         keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_ESCAPE]:
-            break
 
         if keys[pygame.K_UP] or keys[pygame.K_w]:
             if redspeed <= 9.95:
@@ -129,5 +196,3 @@ def game():
         clock.tick(60)
 
 main_menu()
-
-pygame.quit()
