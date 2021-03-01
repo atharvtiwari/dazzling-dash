@@ -241,17 +241,24 @@ def game():
         redcar_pos = list(int(v) for v in pos_red)
 
         if redcar_pos[0] in range(650, 700) and redcar_pos[1] in range(290, 431):
-            counter = 1
+            if vel_red[0] <= 0:
+                counter = 1
+            else:
+                counter = 0
 
         if redcar_pos[0] in range(350,380) and redcar_pos[1] in range(70, 180):
-            if counter == 1:
-                lap += 1
-                if start_time:
-                    lap_time = (pygame.time.get_ticks() - start_time)/1000
-                    total_time += lap_time
-                    avg_time = total_time / lap
+            if vel_red[0] >= 0:
+                if counter == 1:
+                    lap += 1
+                    if start_time:
+                        lap_time = (pygame.time.get_ticks() - start_time)/1000
+                        total_time += lap_time
+                        avg_time = total_time / lap
+                        start_time = pygame.time.get_ticks()
+                    counter = 0
+                else:
+                    counter = 0
                     start_time = pygame.time.get_ticks()
-                counter = 0
 
         offtrack = off_mask.overlap(mask_red, redcar_pos)
 
