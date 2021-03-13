@@ -4,26 +4,26 @@ from pygame.locals import *
 import os.path
 import sys
 
-pygame.init()
-pygame.display.set_caption('Dazzling Dash')
-clock = pygame.time.Clock()
-font = pygame.font.SysFont(None, 50)
-small_font = pygame.font.SysFont(None, 30)
+pygame.init() #initialization
+pygame.display.set_caption('Dazzling Dash') #window title
+clock = pygame.time.Clock() #clock
+font = pygame.font.SysFont(None, 50) #font
+small_font = pygame.font.SysFont(None, 30) #smaller font
 
 WIDTH = 1280
 HEIGHT = 720
-screen = pygame.display.set_mode((WIDTH, HEIGHT), HWSURFACE|DOUBLEBUF, 32)
+screen = pygame.display.set_mode((WIDTH, HEIGHT), HWSURFACE|DOUBLEBUF, 32) #screen dimensions
 
-filepath = os.getcwd()
-track_image = pygame.image.load(os.path.join(filepath+"\media", "track.png")).convert_alpha()
-REDCAR_ORIGINAL = pygame.image.load(os.path.join(filepath+"\media", "car.png")).convert_alpha()
-pygame.mixer.music.load(os.path.join(filepath+"\media", 'dsfs.mp3'))
+filepath = os.getcwd() #directory of main.py
+track_image = pygame.image.load(os.path.join(filepath+"\media", "track.png")).convert_alpha() #importing track image
+REDCAR_ORIGINAL = pygame.image.load(os.path.join(filepath+"\media", "car.png")).convert_alpha() #importing car image
+pygame.mixer.music.load(os.path.join(filepath+"\media", 'dsfs.mp3')) #importing music
 
-pygame.mixer.music.play(-1, 0.0)
+pygame.mixer.music.play(-1, 0.0) #starts music
 
 click = False
 
-def draw_text(text, font, color, surface, x, y):
+def draw_text(text, font, color, surface, x, y): #pygame print text to screen
     text_obj = font.render(text, True, color)
     text_rect = text_obj.get_rect()
     text_rect.topleft = (x, y)
@@ -35,7 +35,7 @@ def main_menu():
 
         click = False
 
-        for event in pygame.event.get():
+        for event in pygame.event.get(): #particular event cases
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
@@ -49,12 +49,13 @@ def main_menu():
                 if event.key == K_RETURN:
                     game()
 
-        screen.fill(pygame.Color('darkgreen'))
-        screen.blit(track_image, (0, 0))
+        screen.fill(pygame.Color('darkgreen')) #background colour
+        screen.blit(track_image, (0, 0)) #background image
 
         draw_text('Main Menu', font, pygame.Color('white'), screen, WIDTH/2 - 73, 95)
         draw_text('Press ENTER to begin', small_font, pygame.Color('red'), screen, WIDTH/2 - 90, 165)
 
+        #defining buttons
         button1 = pygame.Rect(WIDTH/2 - 140, 250, 300, 50)
         button2 = pygame.Rect(WIDTH/2 - 140, 350, 300, 50)
         button3 = pygame.Rect(WIDTH/2 - 140, 450, 300, 50)
@@ -65,8 +66,9 @@ def main_menu():
         pygame.draw.rect(screen, pygame.Color('white'), button3)
         draw_text('Exit', small_font, pygame.Color('black'), screen, WIDTH/2 - 7, 465)
         
-        mx, my = pygame.mouse.get_pos()
+        mx, my = pygame.mouse.get_pos() #get position of cursor
 
+        #defining cursor clicks 
         if button1.collidepoint((mx, my)):
             if click:
                 game()
@@ -80,8 +82,8 @@ def main_menu():
                 pygame.quit()
                 sys.exit()
 
-        pygame.display.flip()
-        clock.tick(60)
+        pygame.display.flip() #screen update
+        clock.tick(60) #frames per second
 
 def controls():
 
@@ -163,14 +165,14 @@ def score(laps, time):
 def game():
 
     redcar = REDCAR_ORIGINAL
-    mask_red = pygame.mask.from_surface(redcar)
-    off_mask = pygame.mask.from_surface(track_image)
-    off_mask.invert()
+    mask_red = pygame.mask.from_surface(redcar) #outline of car sprite
+    off_mask = pygame.mask.from_surface(track_image) #outline of track sprite
+    off_mask.invert() 
 
-    redangle = 0
-    redspeed = 0.0
-    pos_red = Vector2(277, 87.5)
-    vel_red = Vector2(redspeed, 0)
+    redangle = 0 #initial angle
+    redspeed = 0.0 #initial speed
+    pos_red = Vector2(277, 87.5) #initial location w.r.t. top left corner
+    vel_red = Vector2(redspeed, 0) #initial velocity vector
 
     counter = 0
     lap = 0 
@@ -193,11 +195,12 @@ def game():
                 if event.key == K_ESCAPE:
                     score(lap, avg_time)
         
-        vel_red = Vector2(redspeed, 0)
-        vel_red.rotate_ip(-redangle)
-        redcar = pygame.transform.rotate(REDCAR_ORIGINAL, redangle)
-        mask_red = pygame.mask.from_surface(redcar)
+        vel_red = Vector2(redspeed, 0) #change length of velocity vector w.r.t. speed
+        vel_red.rotate_ip(-redangle) #change direction of velocity vector w.r.t. angle
+        redcar = pygame.transform.rotate(REDCAR_ORIGINAL, redangle) #rotate sprite w.r.t. angle
+        mask_red = pygame.mask.from_surface(redcar) #update car outline
 
+        #simple friction
         if redspeed >= 0.02:
             redspeed -= 0.02
         elif redspeed < -0.01:
@@ -207,65 +210,65 @@ def game():
 
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_UP] or keys[pygame.K_w]:
+        if keys[pygame.K_UP] or keys[pygame.K_w]: #acceleration
             if redspeed <= 9.95:
                 redspeed += 0.05
         
-        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]: #brake and reverse
             if redspeed >= 0.1:
                 redspeed -= 0.1
             elif redspeed >= -2.975:
                 redspeed -= 0.025
 
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]: #steer left
             if vel_red.magnitude_squared() > 0.004:
                 redangle += 3
                 vel_red.rotate_ip(-3)
 
-        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]: #steer right
             if vel_red.magnitude_squared() > 0.004:
                 redangle -= 3
                 vel_red.rotate_ip(3)
         
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE]: #handbrake
             redspeed = 0
 
-        if (pos_red.x <= 0) or (pos_red.x >= WIDTH) or (pos_red.y <= 0) or (pos_red.y >= HEIGHT) or keys[pygame.K_e]:
+        if (pos_red.x <= 0) or (pos_red.x >= WIDTH) or (pos_red.y <= 0) or (pos_red.y >= HEIGHT) or keys[pygame.K_e]: #reset
             redangle = 0
             redspeed = 0
             pos_red = Vector2(277, 87.5)
             counter = 0
             start_time = pygame.time.get_ticks()
         
-        pos_red += vel_red
-        redcar_pos = list(int(v) for v in pos_red)
+        pos_red += vel_red #update position of car w.r.t. velocity
+        redcar_pos = list(int(v) for v in pos_red) #store position
 
-        if redcar_pos[0] in range(650, 700) and redcar_pos[1] in range(290, 431):
+        if redcar_pos[0] in range(650, 700) and redcar_pos[1] in range(290, 431): #checkpoint
             if vel_red[0] <= 0:
                 counter = 1
             else:
                 counter = 0
 
-        if redcar_pos[0] in range(350,380) and redcar_pos[1] in range(70, 180):
+        if redcar_pos[0] in range(350,380) and redcar_pos[1] in range(70, 180): #lap finish
             if vel_red[0] >= 0:
-                if counter == 1:
-                    lap += 1
+                if counter == 1: #check if checkpoint crossed
+                    lap += 1 #increase lap count
                     if start_time:
-                        lap_time = (pygame.time.get_ticks() - start_time)/1000
+                        lap_time = (pygame.time.get_ticks() - start_time)/1000 #lap time
                         total_time += lap_time
-                        avg_time = total_time / lap
+                        avg_time = total_time / lap #average time per lap
                         start_time = pygame.time.get_ticks()
                     counter = 0
                 else:
                     counter = 0
                     start_time = pygame.time.get_ticks()
 
-        offtrack = off_mask.overlap(mask_red, redcar_pos)
+        offtrack = off_mask.overlap(mask_red, redcar_pos) #grassy area
 
         screen.fill(pygame.Color('darkgreen'))
         screen.blit(track_image, (0, 0))
 
-        if offtrack:
+        if offtrack: #slowdown if offtrack
             if vel_red.magnitude_squared() > 0.25:
                 if redspeed > 0:
                     redspeed -= 0.25
@@ -273,12 +276,12 @@ def game():
                     redspeed += 0.25
 
         if redspeed != 0:
-            print(redcar_pos, vel_red)
+            print(redcar_pos, vel_red) #console
 
-        screen.blit(redcar, redcar_pos)
-        draw_text('laps: '+str(lap), small_font, pygame.Color('red'), screen, WIDTH - 140, 15)
-        draw_text('last lap time: '+str(round(lap_time, 2))+'s', small_font, pygame.Color('red'), screen, WIDTH - 220, 40)
+        screen.blit(redcar, redcar_pos) #draw car on screen
+        draw_text('laps: '+str(lap), small_font, pygame.Color('red'), screen, WIDTH - 140, 15) #display lap count
+        draw_text('last lap time: '+str(round(lap_time, 2))+'s', small_font, pygame.Color('red'), screen, WIDTH - 220, 40) #display lap time
         pygame.display.flip()
         clock.tick(60)
 
-main_menu()
+main_menu() #start game with main menu
