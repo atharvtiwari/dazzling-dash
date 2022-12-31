@@ -15,9 +15,9 @@ HEIGHT = 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT), HWSURFACE|DOUBLEBUF, 32) #screen dimensions
 
 filepath = os.getcwd() #directory of main.py
-track_image = pygame.image.load(os.path.join(filepath+"\media", "track.png")).convert_alpha() #importing track image
-REDCAR_ORIGINAL = pygame.image.load(os.path.join(filepath+"\media", "car.png")).convert_alpha() #importing car image
-pygame.mixer.music.load(os.path.join(filepath+"\media", 'dsfs.mp3')) #importing music
+track_image = pygame.image.load(os.path.join(filepath+"/media", "track.png")).convert_alpha() #importing track image
+REDCAR_ORIGINAL = pygame.image.load(os.path.join(filepath+"/media", "car.png")).convert_alpha() #importing car image
+pygame.mixer.music.load(os.path.join(filepath+"/media", 'dsfs.mp3')) #importing music
 
 pygame.mixer.music.play(-1, 0.0) #starts music
 
